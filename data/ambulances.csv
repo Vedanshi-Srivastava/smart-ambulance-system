@@ -1,0 +1,6 @@
+id,type,location,availability,eta_minutes
+1,ALS,Bhopal,Available,5
+2,BLS,Bhopal,Available,8
+3,ALS,Indore,Busy,12
+4,BLS,Bhopal,Available,6
+5,ALS,Bhopal,Available,4

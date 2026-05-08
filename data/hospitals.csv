@@ -1,0 +1,6 @@
+id,name,location,capacity,available_beds,specialization
+1,AIIMS Bhopal,Bhopal,High,5,Trauma
+2,City Hospital,Bhopal,Medium,0,General
+3,Red Cross Hospital,Bhopal,Medium,3,Emergency
+4,Chirayu Hospital,Bhopal,High,2,Cardiac
+5,Apollo Sage,Bhopal,High,4,Multi-specialty
