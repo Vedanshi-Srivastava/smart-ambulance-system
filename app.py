@@ -92,8 +92,6 @@ text_input = st.text_area("Type Emergency")
 
 # ---------------- VOICE INPUT ----------------
 
-# ---------------- VOICE INPUT ----------------
-
 if voice_enabled:
 
     st.markdown("### 🎤 Voice Input (Optional)")
@@ -119,3 +117,7 @@ if voice_enabled:
 
 else:
     st.info("🎤 Voice recognition unavailable in cloud deployment")
+
+
+# 🚀 Analyze Button
+analyze = st.button("🚀 Analyze")
