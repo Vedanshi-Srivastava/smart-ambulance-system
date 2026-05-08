@@ -1,6 +1,8 @@
 import streamlit as st
 
 # Optional speech recognition
+voice_enabled = False
+
 try:
     import speech_recognition as sr
     voice_enabled = True
@@ -9,7 +11,6 @@ except:
 
 from triage import classify_severity
 from dispatch import assign_ambulance, suggest_hospital
-
 # -------------------- PAGE CONFIG --------------------
 st.set_page_config(page_title="Smart Ambulance System", page_icon="🚑", layout="wide")
 
@@ -91,6 +92,8 @@ text_input = st.text_area("Type Emergency")
 
 # ---------------- VOICE INPUT ----------------
 
+# ---------------- VOICE INPUT ----------------
+
 if voice_enabled:
 
     st.markdown("### 🎤 Voice Input (Optional)")
@@ -116,60 +119,3 @@ if voice_enabled:
 
 else:
     st.info("🎤 Voice recognition unavailable in cloud deployment")
-
-analyze = st.button("🚀 Analyze")
-
-# 🔍 Processing
-if analyze and text_input:
-    severity = classify_severity(text_input)
-    ambulance = assign_ambulance(severity)
-    hospital = suggest_hospital(severity)
-
-    st.subheader("🚨 Emergency Analysis")
-
-    # Severity Display
-    if severity.startswith("🔴"):
-        st.error(f"Severity Level: {severity}")
-    elif severity.startswith("🟠"):
-        st.warning(f"Severity Level: {severity}")
-    else:
-        st.info(f"Severity Level: {severity}")
-
-    # 🚑 Ambulance Section
-    st.subheader("🚑 Assigned Ambulance")
-
-    if isinstance(ambulance, dict):
-        st.write(f"**Type:** {ambulance['type']}")
-        st.write(f"**Location:** {ambulance['location']}")
-        st.write(f"**ETA:** {ambulance['eta_minutes']} minutes")
-
-        # Explanation
-        if severity.startswith("🔴"):
-            st.caption("Chosen: ALS ambulance for critical condition")
-        elif severity.startswith("🟠"):
-            st.caption("Chosen: Preferred ALS for urgent case")
-        else:
-            st.caption("Chosen: Fastest available ambulance")
-
-    else:
-        st.error(ambulance)
-
-    # 🏥 Hospital Section
-    st.subheader("🏥 Recommended Hospital")
-
-    if isinstance(hospital, dict):
-        st.write(f"**Name:** {hospital['name']}")
-        st.write(f"**Specialization:** {hospital['specialization']}")
-        st.write(f"**Available Beds:** {hospital['available_beds']}")
-
-        # Explanation
-        if severity.startswith("🔴"):
-            st.caption("Selected: Trauma/Emergency hospital for critical case")
-        else:
-            st.caption("Selected: Best available hospital with capacity")
-
-    else:
-        st.error(hospital)
-
-elif analyze:
-    st.warning("⚠️ Please enter or speak emergency details")
