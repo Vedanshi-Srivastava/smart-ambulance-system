@@ -1,5 +1,12 @@
 import streamlit as st
-import speech_recognition as sr
+
+# Optional speech recognition
+try:
+    import speech_recognition as sr
+    voice_enabled = True
+except:
+    voice_enabled = False
+
 from triage import classify_severity
 from dispatch import assign_ambulance, suggest_hospital
 
@@ -82,20 +89,33 @@ st.subheader("📝 Enter Emergency Details")
 
 text_input = st.text_area("Type Emergency")
 
-st.markdown("### 🎤 Voice Input (Optional)")
+# ---------------- VOICE INPUT ----------------
 
-if st.button("🎙️ Record / Upload Voice"):
-    audio_file = st.file_uploader("Upload your recording", type=["wav"])
+if voice_enabled:
+
+    st.markdown("### 🎤 Voice Input (Optional)")
+
+    audio_file = st.file_uploader(
+        "Upload your recording",
+        type=["wav"]
+    )
 
     if audio_file is not None:
+
         recognizer = sr.Recognizer()
+
         with sr.AudioFile(audio_file) as source:
             audio = recognizer.record(source)
-            try:
-                text_input = recognizer.recognize_google(audio)
-                st.success(f"You said: {text_input}")
-            except:
-                st.error("❌ Could not understand audio")
+
+        try:
+            text_input = recognizer.recognize_google(audio)
+            st.success(f"You said: {text_input}")
+
+        except:
+            st.error("❌ Could not understand audio")
+
+else:
+    st.info("🎤 Voice recognition unavailable in cloud deployment")
 
 analyze = st.button("🚀 Analyze")
 
